@@ -45,7 +45,7 @@ public class ExtensionLoader<T> {
      * @param <T>
      * @return
      */
-    public <T> ExtensionLoader<T> getExtensionLoader(Class<T> clz){
+    public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> clz){
 
         checkInterfaceType(clz);
 
