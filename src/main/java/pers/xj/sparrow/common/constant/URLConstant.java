@@ -2,13 +2,17 @@ package pers.xj.sparrow.common.constant;
 
 /**
  * @author xinjie.wu
- * @desc 构建URL的常量
- * @date 2022/1/23 10:48
+ * @desc TODO
+ * @date 2022/2/8 16:18
+ * interface生成的class文件比class生成的class文件会更小, 而且更简洁, 效率更高.
  */
-public class URLConstant {
+public interface URLConstant {
 
-    public static final String DEFAULT_PROTOCOL = "sparrow";
+    String DEFAULT_PROTOCOL = "sparrow";
 
-    public static final String DELIMITER = "/";
+    String DELIMITER = "/";
 
+    String INTERFACE_KEY = "interface";
+
+    String ANY_VALUE = "*";
 }
