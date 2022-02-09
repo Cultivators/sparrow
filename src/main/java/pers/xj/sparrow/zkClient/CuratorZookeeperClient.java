@@ -3,12 +3,17 @@ package pers.xj.sparrow.zkClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.CuratorCache;
+import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
 import org.apache.curator.retry.RetryNTimes;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import pers.xj.sparrow.url.URL;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,6 +23,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class CuratorZookeeperClient extends AbstractZookeeperClient{
+
+    private final ConcurrentMap<String, CuratorCacheListener> listeners = new ConcurrentHashMap();
 
     private final CuratorFramework client;
 
@@ -48,7 +55,7 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient{
         }catch (KeeperException.NodeExistsException e){
             log.warn("ZNode：{} 已存在，会删掉重建。", path);
             deleteNode(path);
-            createPersistentNode(path);
+            createEphemeralNode(path);
         }catch (Exception e){
             log.error("创建zookeeper临时节点异常，原因：{}", e);
             throw new IllegalStateException(e.getMessage(), e);
@@ -85,6 +92,24 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient{
             return null;
         } catch (Exception e) {
             throw new IllegalStateException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void addListener(String path, CuratorCacheListener listener) {
+        CuratorCache.build(client, path)
+                .listenable()
+                .addListener(listener);
+
+        listeners.computeIfAbsent(path, key -> listener);
+    }
+
+    @Override
+    public void removeListener(String path, CuratorCacheListener listener) {
+
+        CuratorCacheListener cacheListener = listeners.remove(path);
+        if (Objects.nonNull(cacheListener)){
+            CuratorCache.build(client, path).listenable().removeListener(listener);
         }
     }
 }

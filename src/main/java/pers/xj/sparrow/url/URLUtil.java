@@ -55,7 +55,7 @@ public class URLUtil {
         }
 
         if (!url.getParams().isEmpty()){
-            fullStr.append("?").append(Joiner.on("&").skipNulls().withKeyValueSeparator("=").join(url.getParams()));
+            fullStr.append("?").append(Joiner.on("&").withKeyValueSeparator("=").join(url.getParams()));
         }
 
         return fullStr.toString();
@@ -76,7 +76,7 @@ public class URLUtil {
         if (urlStr.contains("file:///")){
             return assembleLocalFileProtocol(urlStr);
         }
-        Map<String, String> params = null;
+        Map<String, String> params = Maps.newHashMap();
         String protocol;
         String host = null;
         Integer port = null;

@@ -1,5 +1,7 @@
 package pers.xj.sparrow.zkClient;
 
+import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
+
 import java.util.List;
 
 /**
@@ -15,5 +17,8 @@ public interface ZookeeperClient {
 
     List<String> getChildren(String path);
 
-    String getConnectUrl();
+    void addListener(String path, CuratorCacheListener listener);
+
+    void removeListener(String path, CuratorCacheListener listener);
+
 }

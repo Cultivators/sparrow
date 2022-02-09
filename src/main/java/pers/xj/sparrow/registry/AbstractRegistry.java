@@ -2,6 +2,7 @@ package pers.xj.sparrow.registry;
 
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
 import pers.xj.sparrow.url.URL;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public abstract class AbstractRegistry implements Registry{
     private URL registerUrl;
 
     // 记录本机存活的服务
-    private Set<URL> availableServices = Sets.newConcurrentHashSet();
+    private final Set<URL> availableServices = Sets.newConcurrentHashSet();
 
     public AbstractRegistry(URL url){
         // 对进出的url都进行createCopy保护，避免registry中的对象被修改，避免潜在的并发问题。
@@ -47,8 +48,11 @@ public abstract class AbstractRegistry implements Registry{
 
     @Override
     public List<URL> lookup(URL url) {
-
         return doLookup(url);
+    }
+
+    public void doWatch(CuratorCacheListener.Type type, URL url){
+         // 带扩展
     }
 
     protected abstract void doRegister(URL url);
@@ -56,4 +60,5 @@ public abstract class AbstractRegistry implements Registry{
     protected abstract void doUnRegister(URL url);
 
     protected abstract List<URL> doLookup(URL url);
+
 }

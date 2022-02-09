@@ -46,7 +46,7 @@ public abstract class AbstractZookeeperClient implements ZookeeperClient{
      * 获取zookeeper client 连接地址。处理集群地址。
      * @return
      */
-    public String getConnectUrl(){
+    protected String getConnectUrl(){
         String standAloneUrl = url.getHost() + ":" + url.getPort();
         String backups = url.getParam(ZK_BACKUP_KEY, null);
         if (StringUtils.isNotBlank(backups)){

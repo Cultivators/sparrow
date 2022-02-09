@@ -13,7 +13,6 @@ public class ZookeeperRegistryFactory implements RegistryFactory{
 
     @Override
     public Registry getRegister(URL url) {
-        // TODO 缓存
         return new ZookeeperRegistry(url);
     }
 }

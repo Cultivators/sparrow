@@ -11,6 +11,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Data
 @ToString
@@ -71,6 +72,13 @@ public class URL implements Serializable {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+    }
+
+    private Map<String, Number> getNumbers() {
+        if (numbers == null) { // 允许并发重复创建
+            numbers = new ConcurrentHashMap<String, Number>();
+        }
+        return numbers;
     }
 
     // --------------只扩展了String、Integer、Long 常用类型的转换-----------------------
