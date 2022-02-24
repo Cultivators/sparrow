@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package pers.xj.sparrow.netty.learning.protoc;
+
+option java_package = "pers.xj.sparrow.netty.learning.protoc";
+option java_outer_classname = "MsgProto";
+
+message Msg{
+    uint32 id = 1;
+    string name = 2;
+}

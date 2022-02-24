@@ -52,7 +52,7 @@ public abstract class AbstractRegistry implements Registry{
     }
 
     public void doWatch(CuratorCacheListener.Type type, URL url){
-         // 带扩展
+         // 待扩展
     }
 
     protected abstract void doRegister(URL url);
